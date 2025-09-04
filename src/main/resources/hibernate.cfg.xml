@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+	
+<hibernate-configuration>
+	
+	<session-factory>
+	<!-- Database configuration -->
+	<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mcs</property>
+	<property name="hibernate.connection.username">root</property>
+	<property name="hibernate.connection.password">Sahani@2004</property>
+	<property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+	
+	<!-- Hibernate configuration -->
+	
+	<property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+	<property name="hibernate.show_sql">true</property>
+	<property name="hibernate.format_sql">true</property>
+	<property name="hibernate.hbm2ddl.auto">update</property>
+	
+	<!-- xml/class mapping -->
+	<mapping class="com.dh.mcs.entities.Users"></mapping>
+	<mapping class="com.dh.mcs.entities.Claims"></mapping>
+	<mapping class="com.dh.mcs.entities.Approvers"></mapping>
+
+	</session-factory>
+</hibernate-configuration>
