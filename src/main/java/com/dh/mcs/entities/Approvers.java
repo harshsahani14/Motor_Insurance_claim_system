@@ -23,16 +23,16 @@ public class Approvers {
 	@Column( unique = true )
 	private String email;
 	
-	public Approvers(long approverId, String name, String email, String contact, String password, String address,
-			Level level) {
-		this.approverId = approverId;
-		this.name = name;
-		this.email = email;
-		this.contact = contact;
-		this.password = password;
-		this.address = address;
-		this.level = level;
-	}
+	private String contact;
+	
+	private String password;
+	
+	@Lob
+	private String address;
+	
+	@Enumerated(EnumType.STRING)
+	private Level level;
+	
 
 	@Override
 	public String toString() {
@@ -96,14 +96,6 @@ public class Approvers {
 		this.level = level;
 	}
 
-	private String contact;
 	
-	private String password;
-	
-	@Lob
-	private String address;
-	
-	@Enumerated(EnumType.STRING)
-	private Level level;
 	
 }

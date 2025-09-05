@@ -1,7 +1,8 @@
-package coniguration;
+package com.dh.mcs.configuration;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.context.annotation.Bean;
 
 public class HibernateConfig {
 
@@ -18,7 +19,8 @@ public class HibernateConfig {
 		}
 	}
 	
-	public SessionFactory getSessionFactory() {
+	@Bean
+	public static SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
 }

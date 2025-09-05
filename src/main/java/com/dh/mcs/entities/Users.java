@@ -1,6 +1,5 @@
 package com.dh.mcs.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -39,15 +38,6 @@ public class Users {
 		return userId;
 	}
 
-	public Users(long userId, String name, String email, String contact, String password, String address) {
-		this.userId = userId;
-		this.name = name;
-		this.email = email;
-		this.contact = contact;
-		this.password = password;
-		this.address = address;
-		this.claims = new ArrayList<>();
-	}
 
 	public List<Claims> getClaims() {
 		return claims;

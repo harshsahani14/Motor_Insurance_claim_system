@@ -1,6 +1,6 @@
 package com.dh.mcs.dto;
 
-public class UserDTO {
+public class SignUpDTO {
 
 	private String name;
 	
@@ -9,6 +9,16 @@ public class UserDTO {
 	private String password;
 	
 	private String address;
+	
+	private String contact;
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
 
 	public String getName() {
 		return name;
@@ -47,12 +57,6 @@ public class UserDTO {
 		return "UserDTO [name=" + name + ", email=" + email + ", password=" + password + ", address=" + address + "]";
 	}
 
-	public UserDTO(String name, String email, String password, String address) {
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.address = address;
-	}
 	
 	
 }
