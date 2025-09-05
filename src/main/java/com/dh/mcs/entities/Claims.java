@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Claims {
@@ -41,29 +40,46 @@ public class Claims {
 	
 	private int amount;
 	
-	private String documents;
+	private String dlImage;
 	
-	public Claims(long claimId, String vehicleNo, String rcNo, Users user, String dlNo, String policyNo,
-			String incidentDate, String incidentDetails, String incidentLocation, int amount, String documents) {
-		this.claimId = claimId;
-		this.vehicleNo = vehicleNo;
-		this.rcNo = rcNo;
-		this.user = user;
-		this.dlNo = dlNo;
-		this.policyNo = policyNo;
-		this.incidentDate = incidentDate;
-		this.incidentDetails = incidentDetails;
-		this.incidentLocation = incidentLocation;
-		this.amount = amount;
-		this.documents = documents;
+	private String rcImage;
+	
+	private String vehicleImage1;
+	
+	private String vehicleImage2;
+	
+
+
+	public String getDlImage() {
+		return dlImage;
 	}
 
-	@Override
-	public String toString() {
-		return "Claims [claimId=" + claimId + ", vehicleNo=" + vehicleNo + ", rcNo=" + rcNo + ", user=" + user
-				+ ", dlNo=" + dlNo + ", policyNo=" + policyNo + ", incidentDate=" + incidentDate + ", incidentDetails="
-				+ incidentDetails + ", incidentLocation=" + incidentLocation + ", amount=" + amount + ", documents="
-				+ documents + "]";
+	public void setDlImage(String dlImage) {
+		this.dlImage = dlImage;
+	}
+
+	public String getRcImage() {
+		return rcImage;
+	}
+
+	public void setRcImage(String rcImage) {
+		this.rcImage = rcImage;
+	}
+
+	public String getVehicleImage1() {
+		return vehicleImage1;
+	}
+
+	public void setVehicleImage1(String vehicleImage1) {
+		this.vehicleImage1 = vehicleImage1;
+	}
+
+	public String getVehicleImage2() {
+		return vehicleImage2;
+	}
+
+	public void setVehicleImage2(String vehicleImage2) {
+		this.vehicleImage2 = vehicleImage2;
 	}
 
 	public long getClaimId() {
@@ -146,15 +162,4 @@ public class Claims {
 		this.amount = amount;
 	}
 
-	public String getDocuments() {
-		return documents;
-	}
-
-	public void setDocuments(String documents) {
-		this.documents = documents;
-	}
-
-	
-	
-	
 }

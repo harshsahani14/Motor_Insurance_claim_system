@@ -1,11 +1,16 @@
 package com.dh.mcs.configuration;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+
+
 
 import java.util.List;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -48,5 +53,13 @@ public class AppConfig {
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
+    }
+	
+	@Bean
+    public Cloudinary cloudinary() {
+        return new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", "dmjkuo278",
+                "api_key", "721916698112267",
+                "api_secret", "k7SjjXlmpCaRVBU93rwglb-zim8"));
     }
 }

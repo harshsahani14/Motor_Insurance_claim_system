@@ -1,6 +1,7 @@
 package com.dh.mcs.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -51,6 +52,24 @@ public class AssignLevelService {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error while assigning level to approver: "+ e.getMessage());
 			}
 		
+	}
+
+	public ResponseEntity<Map<String, List<Approvers>>> getAllApprovers() {
+		
+		try (Session session = sessionFactory.openSession()){
+			
+			String hql = "FROM Approvers";
+			
+			Query<Approvers> query = session.createQuery(hql,Approvers.class);
+						
+			List<Approvers> list = query.list();
+		
+			
+			return ResponseEntity.status(HttpStatus.OK).body(Map.of("users",list));
+			
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("Server error while fetching approvers",List.of()));
+		}
 	}
 
 }
