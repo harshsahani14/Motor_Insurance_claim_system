@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class RaiseClaimDTO {
 
+	private Long userId;
 	
 	private String vehicleNo;
 	
@@ -128,14 +129,22 @@ public class RaiseClaimDTO {
 		this.vehicleImage2 = vehicleImage2;
 	}
 
-	@Override
-	public String toString() {
-		return "RaiseClaimDTO [vehicleNo=" + vehicleNo + ", rcNo=" + rcNo + ", dlNo=" + dlNo + ", policyNo=" + policyNo
-				+ ", incidentDate=" + incidentDate + ", incidentDetails=" + incidentDetails + ", incidentLocation="
-				+ incidentLocation + ", amount=" + amount + ", dlImage=" + dlImage + ", rcImage=" + rcImage
-				+ ", vehicleImage1=" + vehicleImage1 + ", vehicleImage2=" + vehicleImage2 + "]";
+	public Long getUserId() {
+		return userId;
 	}
 
-	
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	@Override
+	public String toString() {
+		return "RaiseClaimDTO [userId=" + userId + ", vehicleNo=" + vehicleNo + ", rcNo=" + rcNo + ", dlNo=" + dlNo
+				+ ", policyNo=" + policyNo + ", incidentDate=" + incidentDate + ", incidentDetails=" + incidentDetails
+				+ ", incidentLocation=" + incidentLocation + ", amount=" + amount + ", dlImage=" + dlImage
+				+ ", rcImage=" + rcImage + ", vehicleImage1=" + vehicleImage1 + ", vehicleImage2=" + vehicleImage2
+				+ "]";
+	}
+
 	
 }

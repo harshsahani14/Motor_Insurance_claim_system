@@ -1,7 +1,11 @@
 package com.dh.mcs.entities;
 
+import com.dh.mcs.enums.Status;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -48,7 +52,16 @@ public class Claims {
 	
 	private String vehicleImage2;
 	
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
 	public String getDlImage() {
 		return dlImage;
