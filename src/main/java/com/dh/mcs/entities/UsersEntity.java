@@ -10,9 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
-public class Users {
+@Table(name = "users")
+public class UsersEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,18 +34,18 @@ public class Users {
 	private String address;
 	
 	@OneToMany( mappedBy = "user" , cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Claims> claims;
+	private List<ClaimsEntity> claims;
 
 	public long getUserId() {
 		return userId;
 	}
 
 
-	public List<Claims> getClaims() {
+	public List<ClaimsEntity> getClaims() {
 		return claims;
 	}
 
-	public void setClaims(List<Claims> claims) {
+	public void setClaims(List<ClaimsEntity> claims) {
 		this.claims = claims;
 	}
 

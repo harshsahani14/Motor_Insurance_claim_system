@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dh.mcs.dto.AssignLevelDTO;
-import com.dh.mcs.entities.Approvers;
+import com.dh.mcs.entities.ApproversEntity;
 import com.dh.mcs.services.AssignLevelService;
 
 @RestController
@@ -28,7 +28,7 @@ public class AssignLevel {
 	}
 	
 	@GetMapping("/getApprovers")
-	public ResponseEntity<Map<String,List<Approvers>>> getAllApprovers(){
+	public ResponseEntity<Map<String,List<ApproversEntity>>> getAllApprovers(){
 		return assignLevelService.getAllApprovers();
 	}
 }

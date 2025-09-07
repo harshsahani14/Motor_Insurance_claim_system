@@ -20,9 +20,10 @@
 	<property name="hibernate.hbm2ddl.auto">update</property>
 	
 	<!-- xml/class mapping -->
-	<mapping class="com.dh.mcs.entities.Users"></mapping>
-	<mapping class="com.dh.mcs.entities.Claims"></mapping>
-	<mapping class="com.dh.mcs.entities.Approvers"></mapping>
+	<mapping class="com.dh.mcs.entities.UsersEntity"></mapping>
+	<mapping class="com.dh.mcs.entities.ClaimsEntity"></mapping>
+	<mapping class="com.dh.mcs.entities.ApproversEntity"></mapping>
+	<mapping class="com.dh.mcs.entities.AdminEntity"></mapping>
 
 	</session-factory>
 </hibernate-configuration>

@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.dh.mcs.dto.AssignLevelDTO;
-import com.dh.mcs.entities.Approvers;
+import com.dh.mcs.entities.ApproversEntity;
 @Service
 public class AssignLevelService {
 	
@@ -28,17 +28,17 @@ public class AssignLevelService {
 				
 				String hql = "FROM Approvers where email=:email";
 				
-				Query<Approvers> query = session.createQuery(hql,Approvers.class);
+				Query<ApproversEntity> query = session.createQuery(hql,ApproversEntity.class);
 				
 				query.setParameter("email", assignLevelDTO.getEmail());
 				
-				List<Approvers> list = query.list();
+				List<ApproversEntity> list = query.list();
 				
 				if(list.size()==0) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email provided is invalid");
 				}
 				
-				Approvers approver = list.get(0);
+				ApproversEntity approver = list.get(0);
 				
 				approver.setLevel(assignLevelDTO.getLevel());
 				
@@ -54,15 +54,15 @@ public class AssignLevelService {
 		
 	}
 
-	public ResponseEntity<Map<String, List<Approvers>>> getAllApprovers() {
+	public ResponseEntity<Map<String, List<ApproversEntity>>> getAllApprovers() {
 		
 		try (Session session = sessionFactory.openSession()){
 			
 			String hql = "FROM Approvers";
 			
-			Query<Approvers> query = session.createQuery(hql,Approvers.class);
+			Query<ApproversEntity> query = session.createQuery(hql,ApproversEntity.class);
 						
-			List<Approvers> list = query.list();
+			List<ApproversEntity> list = query.list();
 		
 			
 			return ResponseEntity.status(HttpStatus.OK).body(Map.of("users",list));

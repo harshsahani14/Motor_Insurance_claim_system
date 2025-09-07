@@ -8,10 +8,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.dh.mcs.enums.Level;
 
 @Entity
-public class Approvers {
+@Table(name = "approvers")
+public class ApproversEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +40,9 @@ public class Approvers {
 	@Enumerated(EnumType.STRING)
 	private Level level;
 	
+	@OneToMany
+	List<ClaimsEntity> pendingClaims = new ArrayList<>(); 
+
 
 	@Override
 	public String toString() {
@@ -94,6 +104,14 @@ public class Approvers {
 
 	public void setLevel(Level level) {
 		this.level = level;
+	}
+	
+	public List<ClaimsEntity> getPendingClaims() {
+		return pendingClaims;
+	}
+
+	public void setPendingClaims(List<ClaimsEntity> pendingClaims) {
+		this.pendingClaims = pendingClaims;
 	}
 
 	

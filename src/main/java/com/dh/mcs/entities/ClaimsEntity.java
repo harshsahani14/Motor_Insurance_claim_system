@@ -12,9 +12,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-public class Claims {
+@Table(name = "claims")
+public class ClaimsEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +30,7 @@ public class Claims {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id" , nullable = false)
-	private Users user;
+	private UsersEntity user;
 	
 	private String dlNo;
 	
@@ -44,6 +46,13 @@ public class Claims {
 	
 	private int amount;
 	
+	private int currLevel = 0;
+	
+	private int requiredLevel;
+	
+	@Lob
+	private String remarks;
+	
 	private String dlImage;
 	
 	private String rcImage;
@@ -54,6 +63,32 @@ public class Claims {
 	
 	@Enumerated(EnumType.STRING)
 	private Status status;
+	
+	
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public int getCurrLevel() {
+		return currLevel;
+	}
+
+	public void setCurrLevel(int currLevel) {
+		this.currLevel = currLevel;
+	}
+
+	public int getRequiredLevel() {
+		return requiredLevel;
+	}
+
+	public void setRequiredLevel(int requiredLevel) {
+		this.requiredLevel = requiredLevel;
+	}
+
 
 	public Status getStatus() {
 		return status;
@@ -119,11 +154,11 @@ public class Claims {
 		this.rcNo = rcNo;
 	}
 
-	public Users getUser() {
+	public UsersEntity getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(UsersEntity user) {
 		this.user = user;
 	}
 

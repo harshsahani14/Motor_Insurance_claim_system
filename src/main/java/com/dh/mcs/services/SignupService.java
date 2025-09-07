@@ -10,9 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dh.mcs.dto.SignUpDTO;
-import com.dh.mcs.entities.Admin;
-import com.dh.mcs.entities.Approvers;
-import com.dh.mcs.entities.Users;
+import com.dh.mcs.entities.AdminEntity;
+import com.dh.mcs.entities.ApproversEntity;
+import com.dh.mcs.entities.UsersEntity;
 
 
 
@@ -32,7 +32,7 @@ public class SignupService {
 				
 			Transaction transaction = session.beginTransaction();
 			
-			Users user = new Users();
+			UsersEntity user = new UsersEntity();
 			
 			user.setName(userDTO.getName());
 			user.setAddress(userDTO.getAddress());
@@ -58,7 +58,7 @@ public class SignupService {
 				
 			Transaction transaction = session.beginTransaction();
 			
-			Approvers approver = new Approvers();
+			ApproversEntity approver = new ApproversEntity();
 			
 			approver.setName(approverDTO.getName());
 			approver.setAddress(approverDTO.getAddress());
@@ -84,7 +84,7 @@ public class SignupService {
 				
 			Transaction transaction = session.beginTransaction();
 			
-			Admin admin = new Admin();
+			AdminEntity admin = new AdminEntity();
 			
 			admin.setName(adminDTO.getName());
 			admin.setContact(adminDTO.getContact());

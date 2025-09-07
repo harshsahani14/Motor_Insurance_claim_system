@@ -12,9 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dh.mcs.dto.SigninDTO;
-import com.dh.mcs.entities.Admin;
-import com.dh.mcs.entities.Approvers;
-import com.dh.mcs.entities.Users;
+import com.dh.mcs.entities.AdminEntity;
+import com.dh.mcs.entities.ApproversEntity;
+import com.dh.mcs.entities.UsersEntity;
 import com.dh.mcs.enums.Role;
 
 import org.hibernate.query.Query;
@@ -39,11 +39,11 @@ public class SigninService {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message","Email and password are required"));
 			}
 			
-			Query<Users> query = session.createQuery(hql,Users.class);
+			Query<UsersEntity> query = session.createQuery(hql,UsersEntity.class);
 			
 			query.setParameter("email", signinDTO.getEmail());
 			
-			List<Users> list = query.list();
+			List<UsersEntity> list = query.list();
 			
 			if(list.size()==0) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message","Email is invalid"));
@@ -74,11 +74,11 @@ public class SigninService {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message","Email and password are required"));
 				}
 				
-				Query<Approvers> query = session.createQuery(hql,Approvers.class);
+				Query<ApproversEntity> query = session.createQuery(hql,ApproversEntity.class);
 				
 				query.setParameter("email", signinDTO.getEmail());
 				
-				List<Approvers> list = query.list();
+				List<ApproversEntity> list = query.list();
 				
 				if(list.size()==0) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message","Email is invalid"));
@@ -109,11 +109,11 @@ public class SigninService {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message","Email and password are required"));
 				}
 				
-				Query<Admin> query = session.createQuery(hql,Admin.class);
+				Query<AdminEntity> query = session.createQuery(hql,AdminEntity.class);
 				
 				query.setParameter("email", signinDTO.getEmail());
 				
-				List<Admin> list = query.list();
+				List<AdminEntity> list = query.list();
 				
 				if(list.size()==0) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message","Email is invalid"));
