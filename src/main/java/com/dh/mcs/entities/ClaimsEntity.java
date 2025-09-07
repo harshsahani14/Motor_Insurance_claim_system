@@ -1,5 +1,6 @@
 package com.dh.mcs.entities;
 
+import com.dh.mcs.enums.Level;
 import com.dh.mcs.enums.Status;
 
 import jakarta.persistence.Column;
@@ -46,9 +47,11 @@ public class ClaimsEntity {
 	
 	private int amount;
 	
-	private int currLevel = 0;
+	@Enumerated(EnumType.STRING)
+	private Level currLevel = Level.ZERO;
 	
-	private int requiredLevel;
+	@Enumerated(EnumType.STRING)
+	private Level requiredLevel;
 	
 	@Lob
 	private String remarks;
@@ -72,23 +75,24 @@ public class ClaimsEntity {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+	
+	
 
-	public int getCurrLevel() {
+	public Level getCurrLevel() {
 		return currLevel;
 	}
 
-	public void setCurrLevel(int currLevel) {
+	public void setCurrLevel(Level currLevel) {
 		this.currLevel = currLevel;
 	}
 
-	public int getRequiredLevel() {
+	public Level getRequiredLevel() {
 		return requiredLevel;
 	}
 
-	public void setRequiredLevel(int requiredLevel) {
+	public void setRequiredLevel(Level requiredLevel) {
 		this.requiredLevel = requiredLevel;
 	}
-
 
 	public Status getStatus() {
 		return status;

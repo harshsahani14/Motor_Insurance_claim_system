@@ -35,24 +35,12 @@ public class ClaimsService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	@Autowired
+	private EmailService emailService;
+	
 	private static Map<Level, Integer> map = new HashMap<>();
 	
-	static {
-		
-		map.put(Level.ONE , 0);
-		map.put(Level.TWO, 0);
-		map.put(Level.THREE, 0);
-	}
 
-	private Level getLevelFromInt(int level) {
-	    return switch(level) {
-	        case 1 -> Level.ONE;
-	        case 2 -> Level.TWO;
-	        case 3 -> Level.THREE;
-	        default -> throw new IllegalArgumentException("Invalid level: " + level);
-	    };
-	}
-	
 	public ForwardClaimDTO saveClaimService(RaiseClaimDTO raiseClaimDTO) {
 		
 		try(Session session = sessionFactory.openSession()){
@@ -70,8 +58,8 @@ public class ClaimsService {
 			claim.setIncidentLocation(raiseClaimDTO.getIncidentLocation());
 			claim.setAmount(raiseClaimDTO.getAmount());
 			claim.setStatus(Status.PENDING);
-			claim.setRequiredLevel( raiseClaimDTO.getAmount()<25000 ? 1 : 
-									raiseClaimDTO.getAmount()<50000 ? 2 : 3);
+			claim.setRequiredLevel( raiseClaimDTO.getAmount()<25000 ? Level.ONE : 
+									raiseClaimDTO.getAmount()<50000 ? Level.TWO : Level.THREE);
 			
 			 UsersEntity user = session.get(UsersEntity.class, raiseClaimDTO.getUserId()); 
 			 if (user == null) {
@@ -85,26 +73,25 @@ public class ClaimsService {
 			claim.setVehicleImage1( uploadImage(raiseClaimDTO.getVehicleImage1()) );
 			claim.setVehicleImage2( uploadImage(raiseClaimDTO.getVehicleImage2()) );
 			
-			ForwardClaimDTO forwardClaimDTO = toForwardClaimDTO(claim,1);
+			ForwardClaimDTO forwardClaimDTO = toForwardClaimDTO(claim,Level.ONE);
 			
 			 session.persist(claim);
 			 
+			 emailService.sendMail(user.getEmail(), "Claim request created", "Your claim request has forwarded to approvers");
 			 
-			
 			transaction.commit();
 			
 			return forwardClaimDTO;
-			
 			
 		} catch (Exception e) {
 			
 			throw new RuntimeException("Error while saving claim: " + e.getMessage());
 		}
-		
+
 	}
 	
-	private ForwardClaimDTO toForwardClaimDTO(ClaimsEntity claim, int level) {
-		return new ForwardClaimDTO(claim, getLevelFromInt(level));
+	private ForwardClaimDTO toForwardClaimDTO(ClaimsEntity claim, Level level) {
+		return new ForwardClaimDTO(claim, level);
 	}
 
 	public String uploadImage(MultipartFile file) {
@@ -124,7 +111,7 @@ public class ClaimsService {
 		
 		try(Session session = sessionFactory.openSession()) {
 			
-			String hql = " FROM Claims c Where c.user.userId=:userId";
+			String hql = " FROM ClaimsEntity c Where c.user.userId=:userId";
 			
 			List<ViewClaimDTO> res = new ArrayList<>();
 			
@@ -157,7 +144,7 @@ public class ClaimsService {
 			
 			Transaction transaction = session.beginTransaction();
 			
-			String hql = "FROM Approvers where level=:level";
+			String hql = "FROM ApproversEntity where level=:level";
 			
 			Query<ApproversEntity> query = session.createQuery(hql,ApproversEntity.class); 
 			
@@ -165,7 +152,11 @@ public class ClaimsService {
 			
 			List<ApproversEntity> approvers = query.list();
 			
-			int idx = map.get(level);
+			if(approvers.isEmpty()) {
+				throw new RuntimeException("No approvers found for the current claim level");
+			}
+			
+			int idx = map.getOrDefault(level,0);
 			
 			ApproversEntity approver = approvers.get(idx);
 			
@@ -199,6 +190,8 @@ public class ClaimsService {
 			session.merge(approver);
 			session.merge(claim);
 			
+			emailService.sendMail(claim.getUser().getEmail(), "Claim rejection email", "Your claim has been rejected");
+			
 			transaction.commit();
 			
 			return ResponseEntity.ok("Claim reject sucessfully");
@@ -223,13 +216,13 @@ public class ClaimsService {
 		}
 	}
 
-	public boolean needsMoreApproval(int claimId) {
+	public boolean needsOneMoreApproval(int claimId) {
 		
 		try(Session session = sessionFactory.openSession()) {
 			
 			ClaimsEntity claim = session.find(ClaimsEntity.class, claimId);
 			
-			return claim.getCurrLevel()<claim.getRequiredLevel();
+			return claim.getCurrLevel().next() == claim.getRequiredLevel();
 			
 		} catch (Exception e) {
 			throw new RuntimeException("Error while checking if claim needs more approvals: "+e.getMessage());
@@ -246,9 +239,11 @@ public class ClaimsService {
 			ApproversEntity approver = session.find(ApproversEntity.class,approverId);
 			
 			approver.getPendingClaims().remove(claim);
-			claim.setCurrLevel( claim.getCurrLevel()+1 );
+			claim.setCurrLevel( claim.getCurrLevel().next() );
 			
 			ForwardClaimDTO forwardClaimDTO = toForwardClaimDTO(claim, claim.getCurrLevel());
+			
+			System.out.println(claim.getCurrLevel());
 			
 			session.persist(claim);
 			
@@ -277,6 +272,8 @@ public class ClaimsService {
 			session.merge(approver);
 			session.merge(claim);
 			
+			emailService.sendMail(claim.getUser().getEmail(), "Claim approved", "Your claim has been approved");
+			
 			transaction.commit();
 
 			
@@ -288,6 +285,4 @@ public class ClaimsService {
 		
 	}
 	
-	
-
 }

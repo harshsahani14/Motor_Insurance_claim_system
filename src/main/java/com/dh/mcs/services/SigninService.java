@@ -32,7 +32,7 @@ public class SigninService {
 		
 		try (Session session = sessionFactory.openSession()){
 			
-			String hql = "FROM Users where email=:email";
+			String hql = "FROM UsersEntity where email=:email";
 			
 			
 			if(signinDTO.getEmail().equals("") || signinDTO.getPassword().equals("")) {
@@ -67,7 +67,7 @@ public class SigninService {
 		
 		try (Session session = sessionFactory.openSession()){
 			
-				String hql = "FROM Approvers where email=:email";
+				String hql = "FROM ApproversEntity where email=:email";
 				
 
 				if(signinDTO.getEmail().equals("") || signinDTO.getPassword().equals("")) {
@@ -90,7 +90,7 @@ public class SigninService {
 				
 				
 				return ResponseEntity.ok(Map.of("message","Login Sucessful",
-												"userId",list.get(0).getApproverId(),
+												"approverId",list.get(0).getApproverId(),
 												"role",Role.APPROVER));
 			
 		} catch (Exception e) {
@@ -102,7 +102,7 @@ public class SigninService {
 		
 		try (Session session = sessionFactory.openSession()){
 			
-				String hql = "FROM Admin where email=:email";
+				String hql = "FROM AdminEntity where email=:email";
 				
 
 				if(signinDTO.getEmail().equals("") || signinDTO.getPassword().equals("")) {
@@ -125,7 +125,7 @@ public class SigninService {
 				
 				
 				return ResponseEntity.ok(Map.of("message","Login Sucessful",
-												"userId",list.get(0).getAdminId(),
+												"adminId",list.get(0).getAdminId(),
 												"role",Role.ADMIN));
 			
 		} catch (Exception e) {

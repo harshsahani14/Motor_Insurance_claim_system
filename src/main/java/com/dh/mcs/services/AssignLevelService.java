@@ -26,7 +26,7 @@ public class AssignLevelService {
 				
 				Transaction transaction = session.beginTransaction();
 				
-				String hql = "FROM Approvers where email=:email";
+				String hql = "FROM ApproversEntity where email=:email";
 				
 				Query<ApproversEntity> query = session.createQuery(hql,ApproversEntity.class);
 				
@@ -58,7 +58,7 @@ public class AssignLevelService {
 		
 		try (Session session = sessionFactory.openSession()){
 			
-			String hql = "FROM Approvers";
+			String hql = "FROM ApproversEntity";
 			
 			Query<ApproversEntity> query = session.createQuery(hql,ApproversEntity.class);
 						
@@ -68,7 +68,7 @@ public class AssignLevelService {
 			return ResponseEntity.status(HttpStatus.OK).body(Map.of("users",list));
 			
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("Server error while fetching approvers",List.of()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("Server error while fetching approvers: "+e.getMessage(),List.of()));
 		}
 	}
 

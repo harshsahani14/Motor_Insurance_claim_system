@@ -2,6 +2,8 @@ package com.dh.mcs.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,7 +35,8 @@ public class UsersEntity {
 	@Lob
 	private String address;
 	
-	@OneToMany( mappedBy = "user" , cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany( mappedBy = "user" , cascade = CascadeType.ALL, orphanRemoval = true )
+	@JsonIgnore
 	private List<ClaimsEntity> claims;
 
 	public long getUserId() {

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dh.mcs.dto.ClaimDecisionDTO;
 import com.dh.mcs.dto.ForwardClaimDTO;
 import com.dh.mcs.dto.RaiseClaimDTO;
 import com.dh.mcs.dto.ViewClaimDTO;
@@ -50,40 +51,44 @@ public class Claims {
 	}
 	
 	@GetMapping("/getApproverClaims")
-	public ResponseEntity<Map<String, List<ClaimsEntity>>> getApproverClaims(@RequestParam int approverId ){
+	public ResponseEntity<Map<String, List<ClaimsEntity>>> getApproverClaims(@RequestParam int approverId){
 		return claimsService.getApproverClaimsService(approverId);
 	}
 
 	@PutMapping("/approveClaim")
-	public ResponseEntity<String> approveClaim(@RequestBody String remark,@RequestBody int claimId,@RequestBody int approverId){
+	public ResponseEntity<String> approveClaim(@RequestBody ClaimDecisionDTO claimDecisionDTO){
 		
 		try {
 			
-			if(claimsService.needsMoreApproval(claimId)) {
+			if(claimsService.needsOneMoreApproval(claimDecisionDTO.getClaimId())) {
 				
-				ForwardClaimDTO forwardClaimDTO = claimsService.promoteClaimLevel(claimId,approverId);
+				claimsService.promoteClaimLevel( claimDecisionDTO.getClaimId(),claimDecisionDTO.getApproverId());
 				
-				claimsService.forwardClaim(forwardClaimDTO.getClaim(), forwardClaimDTO.getLevel());
+				claimsService.approveClaimService(claimDecisionDTO.getRemark(),claimDecisionDTO.getClaimId());
 				
-				return ResponseEntity.ok("Claim approved and forwaded sucesfully");
+				return ResponseEntity.ok("Claim approved sucesfully");
 				
 			}
 			else {
 				
-				claimsService.approveClaimService(remark,claimId);
+				ForwardClaimDTO forwardClaimDTO = claimsService.promoteClaimLevel( claimDecisionDTO.getClaimId(),claimDecisionDTO.getApproverId());
+				
+				claimsService.forwardClaim(forwardClaimDTO.getClaim(), forwardClaimDTO.getLevel().next());
+				
+				return ResponseEntity.ok("Claim approved and forwaded sucesfully");
+				
 			}
 		} catch (Exception e) {
 			
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
 		
-		return null;
 		
 	}
 	
 	@PutMapping("/rejectClaim")
-	public ResponseEntity<String> rejectClaim(@RequestBody String remark,@RequestBody int claimId,@RequestBody int approverId){
-		return claimsService.rejectClaim(remark,claimId,approverId);
+	public ResponseEntity<String> rejectClaim(@RequestBody ClaimDecisionDTO claimDecisionDTO){
+		return claimsService.rejectClaim(claimDecisionDTO.getRemark(),claimDecisionDTO.getClaimId(),claimDecisionDTO.getApproverId());
 	}
 	
 	

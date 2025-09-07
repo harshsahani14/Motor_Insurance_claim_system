@@ -30,8 +30,6 @@ public class RaiseClaimDTO {
 	
 	private MultipartFile vehicleImage2;
 	
-
-	
 	
 	public String getVehicleNo() {
 		return vehicleNo;
