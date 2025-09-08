@@ -65,7 +65,7 @@ public class AssignLevelService {
 			List<ApproversEntity> list = query.list();
 		
 			
-			return ResponseEntity.status(HttpStatus.OK).body(Map.of("users",list));
+			return ResponseEntity.status(HttpStatus.OK).body(Map.of("approvers",list));
 			
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("Server error while fetching approvers: "+e.getMessage(),List.of()));

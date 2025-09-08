@@ -53,9 +53,10 @@ public class SigninService {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message","Password is invalid"));
 			}
 			
+			list.get(0).setPassword(null);
 			
 			return ResponseEntity.ok(Map.of("message","Login Sucessful",
-											"userId",list.get(0).getUserId(),
+											"user",list.get(0),
 											"role",Role.USER));
 			
 		} catch (Exception e) {
@@ -88,9 +89,10 @@ public class SigninService {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message","Password is invalid"));
 				}
 				
+				list.get(0).setPassword(null);
 				
 				return ResponseEntity.ok(Map.of("message","Login Sucessful",
-												"approverId",list.get(0).getApproverId(),
+												"approverId",list.get(0),
 												"role",Role.APPROVER));
 			
 		} catch (Exception e) {
@@ -123,9 +125,10 @@ public class SigninService {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message","Password is invalid"));
 				}
 				
+				list.get(0).setPassword(null);
 				
 				return ResponseEntity.ok(Map.of("message","Login Sucessful",
-												"adminId",list.get(0).getAdminId(),
+												"adminId",list.get(0),
 												"role",Role.ADMIN));
 			
 		} catch (Exception e) {
