@@ -1,35 +1,127 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 const NewClaimPage = () => {
 
     const [formData, setFormData] = useState({
-        vehicleNumber: '',
-        rcNumber: '',
-        dlNumber: '',
-        policyNumber: '',
-        claimAmount: '',
+        vehicleNo: '',
+        rcNo: '',
+        dlNo: '',
+        policyNo: '',
+        amount: '',
         incidentDate: '',
         incidentLocation: '',
-        incidentDescription: '',
-        drivingLicense: null,
-        rcCopy: null,
+        incidentDetails: '',
+        dlImage: null,
+        rcImage: null,
         vehicleImage1: null,
         vehicleImage2: null
     });
 
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const user = useSelector((state) => state.user);
+
+
+    const handleSubmit = async (e) => {
 
         e.preventDefault()
-        // Handle form submission logic here
-        console.log('Form Data:', formData);
-        // After submission, navigate back to dashboard or show a success message
-        navigate('/dashboard/user');
+
+        console.log(user)
+
+        if(!formData.vehicleNo || !formData.rcNo || !formData.dlNo || !formData.policyNo || !formData.amount || !formData.incidentDate || !formData.incidentLocation || !formData.incidentDetails || !formData.dlImage || !formData.rcImage || !formData.vehicleImage1 || !formData.vehicleImage2){
+            console.log(formData)
+            toast.error("Please fill all the fields")
+            return;
+        }
+
+        if(isNaN(formData.amount) || formData.amount <= 0){
+            toast.error("Please enter a valid claim amount")
+            return;
+        }
+
+        if(formData.incidentDate > new Date().toISOString().split("T")[0]){
+            toast.error("Incident date cannot be in the future")
+            return;
+        }
+
+        const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+
+        const maxSize = 5 * 1024 * 1024; // 5MB
+
+        if(!allowedTypes.includes(formData.dlImage.type)){
+            toast.error("Driving License must be a JPG, PNG or PDF file")
+            return;
+        }
+
+        if(!allowedTypes.includes(formData.rcImage.type)){
+            toast.error("RC Copy must be a JPG, PNG or PDF file")
+            return;
+        }
+
+        if(!allowedTypes.includes(formData.vehicleImage1.type)){
+            toast.error("Vehicle Image 1 must be a JPG, PNG or PDF file")
+            return;
+        }
+
+        if(!allowedTypes.includes(formData.vehicleImage2.type)){
+            toast.error("Vehicle Image 2 must be a JPG, PNG or PDF file")
+            return;
+        }
+
+        if(formData.dlImage.size > maxSize || formData.rcImage.size > maxSize || formData.vehicleImage1.size > maxSize || formData.vehicleImage2.size > maxSize){
+            toast.error("File size should be less than 5MB")
+            return;
+        }
+
+        const toastId = toast.loading("Submitting your claim...")
+
+        const formDatatoSend = new FormData();
+
+            formDatatoSend.append('userId', user.value.userId);
+            formDatatoSend.append('vehicleNo', formData.vehicleNo);
+            formDatatoSend.append('rcNo', formData.rcNo);
+            formDatatoSend.append('dlNo', formData.dlNo);
+            formDatatoSend.append('policyNo', formData.policyNo);
+            formDatatoSend.append('amount', formData.amount);
+            formDatatoSend.append('incidentDate', formData.incidentDate);
+            formDatatoSend.append('incidentLocation', formData.incidentLocation);
+            formDatatoSend.append('incidentDetails', formData.incidentDetails);
+            formDatatoSend.append('dlImage', formData.dlImage);
+            formDatatoSend.append('rcImage', formData.rcImage);
+            formDatatoSend.append('vehicleImage1', formData.vehicleImage1);
+            formDatatoSend.append('vehicleImage2', formData.vehicleImage2);
+
+        try {
+            
+            const response = await fetch('http://localhost:8080/api/claims/raiseClaim', {
+                method: 'POST',
+                body: formDatatoSend,
+            })
+
+            if(response.status === 200){
+                toast.dismiss(toastId)
+                toast.success("Claim submitted successfully")
+                navigate('/dashboard/user')
+            }
+
+        } catch (error) {
+            console.log(error)
+            toast.dismiss(toastId)
+            toast.error("Failed to submit claim")
+        }
+        
+        
+
     }
 
+    const handleFileChange = (e) => {
+        const { name, files } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
+    }
 
   return (
 
@@ -43,20 +135,20 @@ const NewClaimPage = () => {
 
             <div className=' flex gap-5'>
             <input type="text" placeholder="Vehicle Number" 
-                value={formData.vehicleNumber}
-                onChange={(e) => setFormData({ ...formData, vehicleNumber: e.target.value })}
+                value={formData.vehicleNo}
+                onChange={(e) => setFormData({ ...formData, vehicleNo: e.target.value })}
             
                 className=' h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder-gray-400'
             />
             <input type="text" placeholder="RC Number"  
-                value={formData.rcNumber}
-                onChange={(e) => setFormData({ ...formData, rcNumber: e.target.value })}
+                value={formData.rcNo}
+                onChange={(e) => setFormData({ ...formData, rcNo: e.target.value })}
 
                 className=' h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder-gray-400'
             />
             <input type="text" placeholder="DL Number "  
-                value={formData.dlNumber}
-                onChange={(e) => setFormData({ ...formData, dlNumber: e.target.value })}
+                value={formData.dlNo}
+                onChange={(e) => setFormData({ ...formData, dlNo: e.target.value })}
 
                 className=' h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder-gray-400'
             />
@@ -69,14 +161,14 @@ const NewClaimPage = () => {
 
             <div className=' flex gap-5'>
             <input type="text" placeholder="Policy Number"  
-                value={formData.policyNumber}
-                onChange={(e) => setFormData({ ...formData, policyNumber: e.target.value })}
+                value={formData.policyNo}
+                onChange={(e) => setFormData({ ...formData, policyNo: e.target.value })}
                 className='  h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder-gray-400'
             />
 
-            <input type="number" placeholder="Claim Amount"  
-                value={formData.claimAmount}
-                onChange={(e) => setFormData({ ...formData, claimAmount: e.target.value })}
+            <input type="text" placeholder="Claim Amount"  
+                value={formData.amount}
+                onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                 className='  h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder-gray-400'
             />
 
@@ -103,8 +195,8 @@ const NewClaimPage = () => {
             </div>
 
                 <textarea placeholder="Incident Description" rows="4" className="w-full h-24 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder-gray-400"
-                value={formData.incidentDescription}
-                onChange={(e) => setFormData({ ...formData, incidentDescription: e.target.value })}
+                value={formData.incidentDetails}
+                onChange={(e) => setFormData({ ...formData, incidentDetails: e.target.value })}
                 ></textarea>
 
         </div>
@@ -116,31 +208,35 @@ const NewClaimPage = () => {
             <div>
                 <label className="block text-sm font-medium text-gray-700">Driving License (PDF/JPG/PNG, max 5MB)</label>
                 <input type="file"
-                value={formData.drivingLicense} 
-                onChange={(e) => setFormData({ ...formData, drivingLicense: e.target.files[0] })}
+                name='dlImage'
+                accept=".pdf,.jpg,.png"
+                onChange={handleFileChange}
                 className="mt-1 block w-full text-sm text-gray-500" />
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700">RC Copy (PDF/JPG/PNG, max 5MB)</label>
-                <input type="file" 
-                value={formData.rcCopy}
-                onChange={(e) => setFormData({ ...formData, rcCopy: e.target.files[0] })} className="mt-1 block w-full text-sm text-gray-500" />
+                <input type="file"
+                name='rcImage'
+                accept=".pdf,.jpg,.png"
+                onChange={handleFileChange} className="mt-1 block w-full text-sm text-gray-500" />
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700">Vehicle Images (two images, JPG/PNG, max 5MB each)</label>
-                <input type="file" multiple onChange={(e) => setFormData({ ...formData, vehicleImages: [...e.target.files] })} 
-                value={formData.vehicleImage1}
+                <input type="file" multiple onChange={handleFileChange} 
+                accept='.jpg,.png,.pdf'
+                name='vehicleImage1'
                 className="mt-1 block w-full text-sm text-gray-500" />
                 <input type="file" multiple
-                value={formData.vehicleImage2}
-                onChange={(e) => setFormData({ ...formData, vehicleImages: [...e.target.files] })} className="mt-1 block w-full text-sm text-gray-500" />
+                name='vehicleImage2'
+                accept=".jpg,.png,.pdf"
+                onChange={handleFileChange} className="mt-1 block w-full text-sm text-gray-500" />
             </div>
             </div>
         </div>
 
         {/* Buttons */}
         <div className="flex justify-end space-x-4">
-            <button className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-800"
+            <button className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800"
             onClick={handleSubmit}
             >
             Submit Claim

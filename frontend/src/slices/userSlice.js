@@ -6,11 +6,11 @@ const userSlice = createSlice({
     value: null
   },
   reducers: {
-    update: (state,action)=> {
+    updateUser: (state,action)=> {
       state.value = action.payload
     },
   }
 })
 
-export const { update } = userSlice.actions
+export const { updateUser } = userSlice.actions
 export default userSlice.reducer

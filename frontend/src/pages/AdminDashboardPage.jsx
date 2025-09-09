@@ -11,8 +11,6 @@ const AdminDashboardPage = () => {
     
     const toastId = toast.loading("Updating level...");
 
-    const level = newLevel === "Level 1" ? "ONE" : newLevel === "Level 2" ? 2 : "THREE" ;
-
     try {
         const response = await fetch('http://localhost:8080/api/admin/assign', {
             method: "PUT",
@@ -21,7 +19,7 @@ const AdminDashboardPage = () => {
                 },
                 body: JSON.stringify({
                     email: email,
-                    level: level
+                    level: newLevel
                 })
         });
 
@@ -48,7 +46,6 @@ const AdminDashboardPage = () => {
             });
             
             const data = await response.json();
-
             setApprovers(data.approvers || []);
             toast.dismiss(toastId);
         } catch (error) {
@@ -62,13 +59,21 @@ const AdminDashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8 ">
-      <div className="max-w-5xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">
+
+        <div className=' flex justify-between items-center mb-8'>
+
+            <h1 className="text-2xl font-bold text-gray-800 mb-6">
           Admin Dashboard
         </h1>
-        <p className="text-gray-600 mb-8">
-          Manage approvers and assign their levels.
-        </p>
+
+        <button className="mb-4 px-4 py-2 bg-gray-900 text-white border rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300  ">
+            Logout
+        </button>
+        </div>
+      <div className="max-w-5xl mx-auto">
+        
+        
+        <p className=' text-gray-500 mb-5 '> Assign levels to approvers</p>
 
         <div className="overflow-x-auto rounded-lg shadow overflow-y-visiblevisible   bg-white z-10">
 
@@ -91,7 +96,9 @@ const AdminDashboardPage = () => {
                                 >
                                 <td className="px-6 py-4 ">{approver.name}</td>
                                 <td className="px-6 py-4  ">{approver.email}</td>
-                                <td className="px-6 py-4 ">{approver.level || "No Level Assigned"}</td>
+                                <td className="px-6 py-4 ">{approver.level 
+                                 
+                                }</td>
                                 <td className="px-6 py-4 text-right">
                                     <DropDownComponent
                                         onChange={(newLevel) => {
@@ -102,7 +109,7 @@ const AdminDashboardPage = () => {
                                                 )
                                             );
                                         }}
-                                        array={["Level 1", "Level 2", "Level 3"]}
+                                        array={["ONE", "TWO", "THREE"]}
                                         label="level"
                                     >
 

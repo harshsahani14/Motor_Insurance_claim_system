@@ -4,7 +4,8 @@ import * as EmailValidator from 'email-validator';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { update } from '../slices/userSlice.js';
+import { updateUser } from '../slices/userSlice.js';
+import { updateRole } from '../slices/roleSlice.js';
 
 const LoginPage = () => {
 
@@ -53,7 +54,8 @@ const LoginPage = () => {
 
             const data = await response.json();
 
-            dispatch(update(data.user));
+            dispatch(updateUser(data.user));
+            dispatch(updateRole(data.role));
 
             toast.success("Logged in successfully");
 
