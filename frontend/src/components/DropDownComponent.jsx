@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { FaCaretDown } from "react-icons/fa";
+import { FaCaretUp } from 'react-icons/fa';
 
 const DropDownComponent = ({  onChange, array,label }) => {
   const [open, setOpen] = useState(false);
@@ -8,8 +9,7 @@ const DropDownComponent = ({  onChange, array,label }) => {
 
   return (
     <div className="inline-block text-left w-48 relative ">
-      
-
+    
       <div>
         <button
           type="button"
@@ -17,11 +17,14 @@ const DropDownComponent = ({  onChange, array,label }) => {
           onClick={() => setOpen(!open)}
         >
           {value || `Select ${label}`}
-          <FaCaretDown className="h-5 w-5 ml-2 text-gray-500" />
+          {
+            open ? <FaCaretUp className="ml-2 -mr-1 h-5 w-5"  /> :
+            <FaCaretDown className="ml-2 -mr-1 h-5 w-5"  />
+          }
         </button>
       </div>
 
-      {/* Dropdown menu */}
+  
       {open && (
         <div className=" mt-1 fixed w-[190px] rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-40 ">
           <ul className="py-1">

@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../slices/userSlice.js';
 import { updateRole } from '../slices/roleSlice.js';
+import DropDownComponent from '../components/DropDownComponent.jsx';
+import { setLocalItem } from '../localStorage.js';
 
 const LoginPage = () => {
 
@@ -57,6 +59,9 @@ const LoginPage = () => {
             dispatch(updateUser(data.user));
             dispatch(updateRole(data.role));
 
+            setLocalItem("user", data.user);
+            setLocalItem("role", data.role);
+
             toast.success("Logged in successfully");
 
             navigate(`/dashboard/${data.role.toLowerCase()}`)
@@ -93,16 +98,12 @@ const LoginPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Role</label>
-            <select
-              className="mt-1 block w-full rounded-lg border border-gray-300 p-2 text-sm focus:border-black focus:ring-black"
-              onClick={(e) => setForm({ ...form, role: e.target.value })}
-              required
-            >
-              <option value="User">User</option>
-              <option value="Approver">Approver</option>
-              <option value="Admin">Admin</option>
-            </select>
+            <div className='block text-sm font-medium text-gray-900'>Role</div>
+            <DropDownComponent
+            onChange={(value) => setForm({...form, role: value})}
+            array={["User", "Approver", "Admin"]}
+            label="role"
+            />
           </div>
 
           <div>

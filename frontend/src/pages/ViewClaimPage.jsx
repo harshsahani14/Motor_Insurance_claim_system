@@ -1,6 +1,9 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LuImage } from "react-icons/lu";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux"
+import { useState } from "react";
 
 function InfoRow({ label, value }) {
   return (
@@ -34,15 +37,83 @@ function FileItem({ name, link }) {
   );
 }
 
+
+
 export default function ViewClaimPage() {
 
+
+    const [remark,setRemark] = useState("");
+
+    const user = useSelector((state) => state.user);
+    const navigate = useNavigate();
 
     const location = useLocation();
 
     const { claim } = location.state || {};
 
-    console.log(claim)
+    
 
+    const handleRejection = async() => {
+
+        const toastId = toast.loading("Rejecting claim...");
+        try {
+            const response = await fetch('http://localhost:8080/api/claims/rejectClaim',{
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    remark:remark,
+                    claimId: claim.claimId,
+                    approverId: user.value.approverId
+            })});
+
+            toast.success("Claim rejected successfully");
+            navigate('/dashboard/approver/pending-claims');
+            return;
+
+        } catch (error) {
+            toast.error("Error rejecting claim");
+            return;
+        }
+        finally {
+            toast.dismiss(toastId);
+        }
+
+    }
+
+    const handleApproval = async() => { 
+
+        const toastId = toast.loading("Approving claim...");
+        try {
+            const response = await fetch('http://localhost:8080/api/claims/approveClaim',{
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    remark:remark,
+                    claimId: claim.claimId,
+                    approverId: user.value.approverId
+            })});
+
+            
+            if(response.status !== 200) {
+                console.log(response);
+                return
+            }
+            toast.success("Claim approved successfully");
+            navigate('/dashboard/approver/pending-claims');
+            return;
+
+        } catch (error) {
+            toast.error("Error approving claim");
+            return;
+        }
+        finally {
+            toast.dismiss(toastId);
+        }
+    }
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-10">
@@ -57,7 +128,7 @@ export default function ViewClaimPage() {
             <div className="text-sm uppercase tracking-wide text-gray-500">
               Claim Amount
             </div>
-            <div className="text-2xl font-bold text-gray-900 md:text-3xl">{claim.amount}</div>
+            <div className="text-2xl font-bold text-gray-900 md:text-3xl">${claim.amount}</div>
           </div>
 
 
@@ -92,15 +163,21 @@ export default function ViewClaimPage() {
         <div className="mt-8 flex flex-col gap-2">
             <label className="text-sm font-semibold text-gray-800">Remarks</label>
           <textarea
+            value={remark}
+            onChange={(e) => setRemark(e.target.value)}
             placeholder="Decision note (optional)"
             className="w-full rounded-xl border border-gray-300 p-3 text-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
             rows={5}
           ></textarea>
           <div className="mt-4 flex gap-3">
-            <button className="rounded-lg bg-black px-5 py-2 text-sm font-medium text-white hover:bg-gray-900">
+            <button 
+            onClick={handleApproval}
+            className="rounded-lg bg-black px-5 py-2 text-sm font-medium text-white hover:bg-gray-800">
               Approve
             </button>
-            <button className="rounded-lg bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700">
+            <button 
+                onClick={handleRejection}
+            className="rounded-lg bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700">
               Reject
             </button>
           </div>

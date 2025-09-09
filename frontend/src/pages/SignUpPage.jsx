@@ -2,6 +2,7 @@ import React from 'react'
 import * as EmailValidator from 'email-validator';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import DropDownComponent from '../components/DropDownComponent';
 
 const SignUpPage = () => {
 
@@ -9,7 +10,7 @@ const SignUpPage = () => {
         name : "",
         email : "",
         password : "",
-        role : "User",
+        role : "",
         address : "",
         contact : ""
     })
@@ -110,18 +111,15 @@ const SignUpPage = () => {
             />
           </div>
 
-        
-          <div>
-            <label className="block text-sm font-medium text-gray-900">Role</label>
-            <select
-              className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 text-sm shadow-sm focus:border-black focus:ring-black"
-              onClick={(e) => setForm({ ...form, role: e.target.value })}
-              required
-            >
-              <option value="User">User</option>
-              <option value="Approver">Approver</option>
-            </select>
-          </div>
+
+        <div className="mt-4 flex flex-col gap-1">
+          <div className='block text-sm font-medium text-gray-900'> Role </div>
+          <DropDownComponent
+          onChange={(value) => setForm({...form, role: value})}
+          array={["User", "Approver"]}
+          label="role"
+          />
+        </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-900">Contact</label>

@@ -60,7 +60,7 @@ const ViewPendingClaimsPage = () => {
             <tbody className="divide-y divide-gray-200">
               {claims.length > 0 ? (
                   claims.map((claim) => (
-                    <tr key={claim.id} className="hover:bg-gray-50">
+                    <tr key={claim.claimId} className="hover:bg-gray-50">
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
                     {claim.user.name}
                       </td>

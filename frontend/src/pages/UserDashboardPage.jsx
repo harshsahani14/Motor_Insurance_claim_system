@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { removeLocalItem } from '../localStorage.js';
 
 const UserDashboardPage = () => {
 
@@ -34,7 +35,9 @@ const UserDashboardPage = () => {
             <h2 className="text-lg font-medium mb-2">Track Status</h2>
             <p className="text-sm text-gray-500 mb-4">View all your claims and their current status.</p>
             <button 
-            onClick={() => navigate('/dashboard/user/claims')}
+            onClick={() => {
+                navigate('/dashboard/user/myclaims')
+            }}
             className="px-4 py-2 bg-white border border-gray-200 text-sm rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300">
                 My Claims
             </button>
