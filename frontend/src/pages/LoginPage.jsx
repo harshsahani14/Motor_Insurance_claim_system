@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import * as EmailValidator from 'email-validator';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { replace, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../slices/userSlice.js';
 import { updateRole } from '../slices/roleSlice.js';
@@ -24,7 +24,7 @@ const LoginPage = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         
-        if(form.email === "" || form.password === ""){
+        if(form.email === "" || form.password === "" || form.role === ""){
             toast.error("Please fill all the fields");
             return;
         }
@@ -56,15 +56,16 @@ const LoginPage = () => {
 
             const data = await response.json();
 
-            dispatch(updateUser(data.user));
-            dispatch(updateRole(data.role));
-
             setLocalItem("user", data.user);
             setLocalItem("role", data.role);
 
+            dispatch(updateUser(data.user));
+            dispatch(updateRole(data.role));
+
+      
             toast.success("Logged in successfully");
 
-            navigate(`/dashboard/${data.role.toLowerCase()}`)
+            navigate(`/dashboard/${data.role.toLowerCase()}`, {replace: true});
         }
         catch(error){
             toast.error("Something went wrong");

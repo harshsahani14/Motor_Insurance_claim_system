@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import GoBackButton from '../components/GoBackButton';
 
 const ViewPendingClaimsPage = () => {
 
@@ -19,9 +20,11 @@ const ViewPendingClaimsPage = () => {
     const fetchPendingClaims = async () => {
 
         const toastId = toast.loading("Fetching pending claims...");
+
+        const approverId =  user.value.approverId || user.value.value.approverId ;
   
         try {
-            const response = await fetch(`http://localhost:8080/api/claims/getApproverClaims?approverId=${user.value.approverId}`,{
+            const response = await fetch(`http://localhost:8080/api/claims/getApproverClaims?approverId=${approverId}`,{
                 method: "GET",
             });
             const data = await response.json();
@@ -44,7 +47,11 @@ const ViewPendingClaimsPage = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen flex justify-center">
       <div className="w-full max-w-4xl">
-        <h1 className="text-2xl font-bold mb-6 ">Pending Claims</h1>
+
+        <div className=' flex justify-between items-center mb-6'>
+        <h1 className="text-2xl font-bold  ">Pending Claims</h1>
+        <GoBackButton path={"/dashboard/approver"} />
+        </div>
 
         <div className="overflow-x-auto bg-white shadow rounded-lg">
           <table className="min-w-full divide-y divide-gray-200">

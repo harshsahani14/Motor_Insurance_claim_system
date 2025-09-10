@@ -7,6 +7,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { Provider } from 'react-redux';
 import store from './store.js'
+import { initializeAuth } from './initializer.js';
+
+initializeAuth(store);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

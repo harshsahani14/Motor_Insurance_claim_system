@@ -13,51 +13,50 @@ import { Navigate } from 'react-router-dom'
 import ViewPendingClaimsPage from './pages/ViewPendingClaimsPage'
 import ViewClaimPage from './pages/ViewClaimPage'
 import UserClaimsPage from './pages/UserClaimsPage'
-import { getLocalItem } from './localStorage'
 
 const App = () => {
 
-  const user = getLocalItem("user");
-  const role = getLocalItem("role");
-
-  const userState = useSelector((state) => state.user);
-  const roleState = useSelector((state) => state.role);
+  const user = useSelector((state) => state.user);
+  const role = useSelector((state) => state.role);
 
   return (
     <div className=' '>
 
       <Routes>
       
-      { (user || userState.value) ? (
+      { user.value && role.value  ? (
           <>
-            {role  === "ADMIN" && (
-              <Route path="/dashboard/admin" element={<AdminDashboardPage />} />
-            )}
-            {role === "USER" && (
+            { role.value  === "ADMIN" || role.value.value === "ADMIN" ? (
+              <>
+                <Route path="/dashboard/admin" element={<AdminDashboardPage />} />
+              </>
+            ) :role.value === "USER" || role.value.value === "USER" ? (
               <>
                 <Route path="/dashboard/user" element={<UserDashboardPage />} />
                 <Route path="/dashboard/user/newclaim" element={<NewClaimPage />} />
-                <Route path="/dashboard/user/claims" element={<UserClaimsPage />} />
+                <Route path="/dashboard/user/myclaims" element={<UserClaimsPage />} />
               </>
-            )}
-            {role === "APPROVER" && (
+            ) :  role.value === "APPROVER" || role.value.value === "APPROVER" ? (
               <>
                 <Route path="/dashboard/approver" element={<ApproverDashboardPage />} />
                 <Route path="/dashboard/approver/pending-claims" element={<ViewPendingClaimsPage />} />
                 <Route path="/dashboard/approver/pending-claims/:id" element={<ViewClaimPage />} />
               </>
-            )}
-            { console.log(userState)}
-
-            <Route path="*" element={<NotFoundPage />} />
+            ) : (
+              null
+            )
+            }
+          
           </>
         ) : (
           <>
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<Navigate to="/login"  replace />} />
           </>
         )}
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   )

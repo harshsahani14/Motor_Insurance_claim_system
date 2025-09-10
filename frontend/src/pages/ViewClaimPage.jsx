@@ -4,6 +4,7 @@ import { LuImage } from "react-icons/lu";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux"
 import { useState } from "react";
+import GoBackButton from "../components/GoBackButton";
 
 function InfoRow({ label, value }) {
   return (
@@ -169,17 +170,21 @@ export default function ViewClaimPage() {
             className="w-full rounded-xl border border-gray-300 p-3 text-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
             rows={5}
           ></textarea>
-          <div className="mt-4 flex gap-3">
+          <div className="mt-4 flex justify-between items-center">
+            <div className=" flex gap-3">
             <button 
             onClick={handleApproval}
-            className="rounded-lg bg-black px-5 py-2 text-sm font-medium text-white hover:bg-gray-800">
+            className="px-4 py-2 border bg-black text-white  rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300">
               Approve
             </button>
             <button 
                 onClick={handleRejection}
-            className="rounded-lg bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700">
+            className="rounded-lg bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 px-5 py-2 text-sm font-medium text-white hover:bg-red-700">
               Reject
             </button>
+            </div>
+
+            <GoBackButton />
           </div>
         </div>
       </div>

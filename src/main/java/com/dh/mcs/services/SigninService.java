@@ -92,7 +92,7 @@ public class SigninService {
 				list.get(0).setPassword(null);
 				
 				return ResponseEntity.ok(Map.of("message","Login Sucessful",
-												"approverId",list.get(0),
+												"user",list.get(0),
 												"role",Role.APPROVER));
 			
 		} catch (Exception e) {
@@ -128,7 +128,7 @@ public class SigninService {
 				list.get(0).setPassword(null);
 				
 				return ResponseEntity.ok(Map.of("message","Login Sucessful",
-												"adminId",list.get(0),
+												"user",list.get(0),
 												"role",Role.ADMIN));
 			
 		} catch (Exception e) {

@@ -77,7 +77,7 @@ public class ClaimsService {
 			
 			 session.persist(claim);
 			 
-			 emailService.sendMail(user.getEmail(), "Claim request created", "Your claim request has forwarded to approvers");
+			 emailService.sendMail(user.getEmail(), "Claim request created", "Your claim request has been saved and forwarded to approvers");
 			 
 			transaction.commit();
 			
@@ -122,7 +122,7 @@ public class ClaimsService {
 			List<ClaimsEntity> list = query.list();
 			
 			for(ClaimsEntity claim:list) {
-				ViewClaimDTO claimDTO = toViewClaimDTO( claim.getVehicleNo(), claim.getIncidentDate(), claim.getAmount() , claim.getStatus());
+				ViewClaimDTO claimDTO = toViewClaimDTO( claim.getVehicleNo(), claim.getIncidentDate(), claim.getAmount() , claim.getStatus(),claim.getRemarks());
 				res.add(claimDTO);
 			}
 			
@@ -132,9 +132,9 @@ public class ClaimsService {
 		}
 	}
 
-	private ViewClaimDTO toViewClaimDTO(String vehicleNo, String incidentDate, int amount, Status status) {
+	private ViewClaimDTO toViewClaimDTO(String vehicleNo, String incidentDate, int amount, Status status,String remarks) {
 		
-		return new ViewClaimDTO(vehicleNo,incidentDate,amount,status);
+		return new ViewClaimDTO(vehicleNo,incidentDate,amount,status,remarks);
 	}
 
 
@@ -180,7 +180,7 @@ public class ClaimsService {
 			
 			Transaction transaction = session.beginTransaction();
 			
-			ApproversEntity approver = session.find(ApproversEntity.class, claimId);
+			ApproversEntity approver = session.find(ApproversEntity.class, approverId);
 			ClaimsEntity claim = session.find(ClaimsEntity.class, claimId);
 			
 			approver.getPendingClaims().remove(claim);

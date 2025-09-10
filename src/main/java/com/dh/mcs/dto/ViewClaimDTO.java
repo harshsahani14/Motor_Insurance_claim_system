@@ -11,19 +11,31 @@ public class ViewClaimDTO {
 	private int amount;
 	
 	private Status status;
+	
+	private String remarks;
 
-	public ViewClaimDTO(String vehicleNo, String incidentDate, int amount, Status status) {
+
+	public ViewClaimDTO(String vehicleNo, String incidentDate, int amount, Status status, String remarks) {
 		super();
 		this.vehicleNo = vehicleNo;
 		this.incidentDate = incidentDate;
 		this.amount = amount;
 		this.status = status;
+		this.remarks = remarks;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 
 	@Override
 	public String toString() {
 		return "ViewClaimDTO [vehicleNo=" + vehicleNo + ", incidentDate=" + incidentDate + ", amount=" + amount
-				+ ", status=" + status + "]";
+				+ ", status=" + status + ", remarks=" + remarks + "]";
 	}
 
 	public String getVehicleNo() {

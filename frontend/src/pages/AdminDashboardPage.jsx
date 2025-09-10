@@ -2,6 +2,7 @@ import React, { use, useEffect } from 'react'
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import DropDownComponent from '../components/DropDownComponent';
+import LogoutButton from '../components/LogoutButton';
 
 const AdminDashboardPage = () => {
   const [approvers, setApprovers] = useState([]);
@@ -66,9 +67,7 @@ const AdminDashboardPage = () => {
           Admin Dashboard
         </h1>
 
-        <button className="mb-4 px-4 py-2 bg-gray-900 text-white border rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300  ">
-            Logout
-        </button>
+        <LogoutButton />
         </div>
       <div className="max-w-5xl mx-auto">
         
@@ -91,14 +90,12 @@ const AdminDashboardPage = () => {
                             <tbody>
                             {approvers.map((approver) => (
                                 <tr
-                                key={approver.id}
+                                key={approver.approverId}
                                 className="border-b hover:bg-gray-50 transition  "
                                 >
                                 <td className="px-6 py-4 ">{approver.name}</td>
                                 <td className="px-6 py-4  ">{approver.email}</td>
-                                <td className="px-6 py-4 ">{approver.level 
-                                 
-                                }</td>
+                                <td className="px-6 py-4 ">{approver.level || "Not Assigned"}</td>
                                 <td className="px-6 py-4 text-right">
                                     <DropDownComponent
                                         onChange={(newLevel) => {

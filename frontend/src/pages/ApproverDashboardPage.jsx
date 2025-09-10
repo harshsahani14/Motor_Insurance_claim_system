@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import LogoutButton from '../components/LogoutButton';
 
 
 const ApproverDashboardPage = () => {
@@ -9,9 +10,7 @@ const ApproverDashboardPage = () => {
     <div className="p-6 bg-gray-100 min-h-screen">
 
         <div className=' flex justify-between items-center mb-8 flex-row-reverse'>
-        <button className="mb-4 px-4 py-2 bg-black text-white border rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300  ">
-            Logout
-        </button>
+        <LogoutButton />
             <h1 className="text-2xl font-semibold ">Approver Dashboard</h1>
             
         </div>
