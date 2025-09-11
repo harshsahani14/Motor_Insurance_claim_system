@@ -55,6 +55,12 @@ const SignUpPage = () => {
                 toast.success("Account created successfully");
             }
 
+            if(response.status === 500){
+                const data = await response.json();
+                toast.error(data.message || "Something went wrong");
+                return;
+            }
+
             navigate('/login');
         } catch (error) {
             toast.error("Something went wrong");

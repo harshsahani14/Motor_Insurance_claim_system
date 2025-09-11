@@ -22,7 +22,7 @@ const UserDashboardPage = () => {
                 
                 <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <h2 className="text-lg font-medium mb-2">Raise a Claim</h2>
-                <p className="text-sm text-gray-500 mb-4">Create a new reimbursement or expense claim.</p>
+                <p className="text-sm text-gray-500 mb-4">Create and submit your motor insurance claim.</p>
                 <button className="px-4 py-2 bg-black text-white text-sm rounded hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300"
                 onClick={() => navigate('/dashboard/user/newclaim')}>
                     New Claim

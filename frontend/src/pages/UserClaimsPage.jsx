@@ -81,7 +81,7 @@ const UserClaimsPage = () => {
 
                    <td> 
                   <div
-                  className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset mt-2 ${
+                  className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset ${
                             claim.status === "PENDING" ? "bg-yellow-600 text-white ring-yellow-600" :
                             claim.status === "REJECTED" ? "bg-red-600 text-white ring-red-600" :
                             claim.status === "APPROVED" ? "bg-green-600 text-white ring-green-600" : "bg-gray-600 text-white ring-gray-600"
