@@ -46,9 +46,9 @@ public class Claims {
 	}
 	
 	@GetMapping("/getUserClaims")
-	public ResponseEntity<Map<String, List<ViewClaimDTO>>> getUserClaims(@RequestParam String userId){
+	public ResponseEntity<Map<String, List<ViewClaimDTO>>> getUserClaims(@RequestParam int userId){
 		
-		return claimsService.getUserClaimsService(Integer.parseInt(userId));
+		return claimsService.getUserClaimsService(userId);
 	}
 	
 	@GetMapping("/getApproverClaims")
