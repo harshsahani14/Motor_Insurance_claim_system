@@ -2,7 +2,7 @@ A web-based Motor Insurance Claim System that allows users to submit and track v
 Admins can assign levels to approvers
 
 Tech Stack:
-Spring boot
-ReactJS
-Spring Hibernate
-Mysql
+Spring boot,
+ReactJS,
+Spring Hibernate,
+Mysql,
