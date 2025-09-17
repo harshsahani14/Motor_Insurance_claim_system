@@ -5,4 +5,4 @@ Tech Stack:
 Spring boot,
 ReactJS,
 Spring Hibernate,
-Mysql,
+Mysql.
